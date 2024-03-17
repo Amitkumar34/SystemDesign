@@ -3,5 +3,7 @@ package LLD.TicTacToe;
 public enum Cell {
     X,
     O,
-    P
+    P,
+    Y,
+    Z
 }

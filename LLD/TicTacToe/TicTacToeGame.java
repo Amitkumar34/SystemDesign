@@ -17,39 +17,98 @@ public class TicTacToeGame implements GameInt {
 
     @Override
     public void startGame() {
-        boolean noWinner = true;
-        println("Game Started!!\n");
+        printText("Game Started!!\n");
+        showGameOptions();
+
         Scanner sc = new Scanner(System.in);
-        while (noWinner) {
+        while (true) {
             board.print();
+
+            // if board is left with any empty cell so that next player can play the turn
             if (!board.hasEmptyCell()) {
-                println("Tie!!\n");
-                println("!!Game Ends!!\n");
-                return;
+                printText("Tie!!\n");
+                endGame();
+                break;
             }
+
             Player cur = players.getFirst();
-            println(cur.getName() + " turn: Enter the cell position:  ");
-            int row = sc.nextInt();
-            int col = sc.nextInt();
-            if (!board.fillCell(row, col, cur.getAssigedCell())) {
-                println("Invalid position...\n");
+            printText(cur.getName() + " turn: Enter the cell position:  ");
+            String input = sc.nextLine().trim();
+            if (handleOption(input)) return;
+            String[] inputs = input.split(" ");
+            int row, col;
+            try {
+                row = Integer.parseInt(inputs[0]);
+                col = Integer.parseInt(inputs[1]);
+            } catch (Exception e) {
+                printText("Invalid input...\n");
                 continue;
             }
+            if (!board.fillCell(row, col, cur.getAssigedCell())) {
+                printText("Invalid position...\n");
+                continue;
+            }
+
+            // shifting to next player and cur player is moved to last
             players.addLast(cur);
             players.removeFirst();
+
+            // checks if the turn played by the current player ends the game
             if (board.hasStrike(row, col, cur.getAssigedCell())) {
                 board.print();
-                println(cur.getName() + " WINS\n");
-                println("Game Ends!!\n");
-                noWinner = false;
+                printText(cur.getName() + " WINS\n");
+                endGame();
+                break;
             }
+        }
+        //checking if user still wants to play the game after previous game ends
+        showGameOptions();
+        while (true) {
+            String input = sc.nextLine().trim();
+            if (handleOption(input)) return;
+            printText("Invalid input...\n");
         }
     }
 
-    public void println(String s) {
+    private void showGameOptions() {
+        printText("In Game Options: Enter 'END' - to end the game, 'RESTART' - to restart the game\n");
+    }
+
+    /**
+     * @param option Selected option is being handled if it is a valid option
+     * @return true if valid option is selected
+     */
+    private boolean handleOption(String option) {
+        switch (option) {
+            case "END":
+                endGame();
+                return true;
+            case "RESTART":
+                reStartGame();
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void reStartGame() {
+        endGame();
+        startGame();
+    }
+
+    @Override
+    public void endGame() {
+        board.reset();
+        System.out.println("!!Game Ends!!");
+    }
+
+    public void printText(String s) {
         System.out.print(s);
     }
 
+    /**
+     * Builder for {@link TicTacToeGame}, set configurations for the Game
+     */
     public static class Builder {
         int size;
         Map<Cell, Player> playerMap;

@@ -1,0 +1,15 @@
+# Compiled output
+out/
+*.class
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# macOS
+.DS_Store
+
+# Build tools (if you use them later)
+target/
+build/
+

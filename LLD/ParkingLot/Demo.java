@@ -1,0 +1,118 @@
+package LLD.ParkingLot;
+
+import LLD.ParkingLot.models.ParkingSpot;
+import LLD.ParkingLot.models.SpotSize;
+import LLD.ParkingLot.models.Ticket;
+import LLD.ParkingLot.service.ParkingLotService;
+import LLD.ParkingLot.store.SpotStore;
+import LLD.ParkingLot.vehicles.Vehicle;
+import LLD.ParkingLot.vehicles.VehicleFactory;
+import LLD.ParkingLot.vehicles.VehicleType;
+import LLD.ParkingLot.vehicles.impl.Bus;
+
+public class Demo {
+    public static void main(String[] args) {
+        System.out.println("=== Parking Lot Demo ===\n");
+
+        // 1. Initialize ParkingLotService (Singleton)
+        ParkingLotService parkingService = ParkingLotService.getInstance();
+
+        // 2. Create and set the SpotStore
+        SpotStore spotStore = new SpotStore();
+        parkingService.setSpotStore(spotStore);
+
+        // 3. Add parking spots of various sizes
+        System.out.println("--- Adding Parking Spots ---");
+
+        // Add 3 small spots (for motorcycles)
+        for (int i = 1; i <= 3; i++) {
+            parkingService.addSpot(new ParkingSpot(SpotSize.SMALL));
+            System.out.println("Added SMALL spot #" + i);
+        }
+
+        // Add 5 medium spots (for cars)
+        for (int i = 1; i <= 5; i++) {
+            parkingService.addSpot(new ParkingSpot(SpotSize.MEDIUM));
+            System.out.println("Added MEDIUM spot #" + i);
+        }
+
+        // Add 2 large spots (for trucks)
+        for (int i = 1; i <= 2; i++) {
+            parkingService.addSpot(new ParkingSpot(SpotSize.LARGE));
+            System.out.println("Added LARGE spot #" + i);
+        }
+
+        // Add 1 extra large spot (for buses)
+        parkingService.addSpot(new ParkingSpot(SpotSize.EXTRA_LARGE));
+        System.out.println("Added EXTRA_LARGE spot #1");
+
+        System.out.println("\nTotal spots: 3 SMALL, 5 MEDIUM, 2 LARGE, 1 EXTRA_LARGE\n");
+
+        // 4. Create some vehicles
+        System.out.println("--- Creating Vehicles ---");
+        Vehicle bike1 = VehicleFactory.createVehicle(VehicleType.MOTORCYCLE, "BIKE-001");
+        Vehicle bike2 = VehicleFactory.createVehicle(VehicleType.MOTORCYCLE, "BIKE-002");
+        Vehicle car1 = VehicleFactory.createVehicle(VehicleType.CAR, "CAR-1234");
+        Vehicle car2 = VehicleFactory.createVehicle(VehicleType.CAR, "CAR-5678");
+        Vehicle car3 = VehicleFactory.createVehicle(VehicleType.CAR, "CAR-9999");
+        Vehicle truck1 = VehicleFactory.createVehicle(VehicleType.TRUCK, "TRUCK-100");
+        Vehicle bus1 = VehicleFactory.createVehicle(VehicleType.BUS, "BUS-500");
+
+        System.out.println("Created: " + bike1 + ", " + bike2);
+        System.out.println("Created: " + car1 + ", " + car2 + ", " + car3);
+        System.out.println("Created: " + truck1);
+        System.out.println("Created: " + bus1);
+        System.out.println();
+
+        // 5. Park vehicles and get tickets
+        System.out.println("--- Parking Vehicles ---");
+
+        Ticket ticket1 = parkingService.parkVehicle(bike1);
+        System.out.println("Parked " + bike1 + " -> Ticket #" + ticket1.getTicketId());
+
+        Ticket ticket2 = parkingService.parkVehicle(car1);
+        System.out.println("Parked " + car1 + " -> Ticket #" + ticket2.getTicketId());
+
+        Ticket ticket3 = parkingService.parkVehicle(car2);
+        System.out.println("Parked " + car2 + " -> Ticket #" + ticket3.getTicketId());
+
+        Ticket ticket4 = parkingService.parkVehicle(truck1);
+        System.out.println("Parked " + truck1 + " -> Ticket #" + ticket4.getTicketId());
+
+        Ticket ticket5 = parkingService.parkVehicle(bus1);
+        System.out.println("Parked " + bus1 + " -> Ticket #" + ticket5.getTicketId());
+
+        System.out.println();
+
+        // 6. Unpark a vehicle
+        System.out.println("--- Unparking Vehicles ---");
+        Vehicle unparkedVehicle = parkingService.unPark(ticket2);
+        System.out.println("Unparked: " + unparkedVehicle + " (Ticket #" + ticket2.getTicketId() + ")");
+
+        // 7. Park another car in the freed spot
+        Ticket ticket6 = parkingService.parkVehicle(car3);
+        System.out.println("Parked " + car3 + " -> Ticket #" + ticket6.getTicketId());
+
+        System.out.println();
+
+        // 8. Demonstrate spot full scenario
+        System.out.println("--- Testing Spot Full Scenario ---");
+        Bus bus2 = new Bus("BUS-600");
+        try {
+            parkingService.parkVehicle(bus2);
+        } catch (RuntimeException e) {
+            System.out.println("Failed to park " + bus2 + ": " + e.getMessage());
+        }
+
+        // Unpark the first bus to free the slot
+        parkingService.unPark(ticket5);
+        System.out.println("Unparked: " + bus1);
+
+        // Now park bus2
+        Ticket ticket7 = parkingService.parkVehicle(bus2);
+        System.out.println("Parked " + bus2 + " -> Ticket #" + ticket7.getTicketId());
+
+        System.out.println();
+        System.out.println("=== Demo Complete ===");
+    }
+}

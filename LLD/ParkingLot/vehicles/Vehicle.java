@@ -1,5 +1,8 @@
 package LLD.ParkingLot.vehicles;
 
+import lombok.Getter;
+
+@Getter
 public abstract class Vehicle {
     protected final VehicleType vehicleType;
     protected final String licensePlate;
@@ -7,13 +10,5 @@ public abstract class Vehicle {
     protected Vehicle(VehicleType vehicleType, String licensePlate) {
         this.vehicleType = vehicleType;
         this.licensePlate = licensePlate;
-    }
-
-    public String getLicensePlate() {
-        return licensePlate;
-    }
-
-    public VehicleType getVehicleType() {
-        return vehicleType;
     }
 }

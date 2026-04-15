@@ -1,8 +1,8 @@
 package LLD.LRUCache;
 
-import java.math.BigDecimal;
+import lombok.Data;
+
 import java.util.*;
-import java.util.spi.CalendarNameProvider;
 
 
 public class LRUCache {
@@ -151,9 +151,10 @@ class DLL<T> {
 }
 
 
+@Data
 class Node<T> {
     private T value;
-    private String key;
+    private final String key;
     private final int TTL;
     private int expiry;
     private Node<T> next, prev;
@@ -164,84 +165,34 @@ class Node<T> {
         this.TTL = TTL;
     }
 
-    public void setValue(T value) {
-        this.value = value;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public void setExpiry(int expiry) {
-        this.expiry = expiry;
-    }
-
-    public void setNext(Node<T> next) {
-        this.next = next;
-    }
-
-    public void setPrev(Node<T> prev) {
-        this.prev = prev;
-    }
-
-    public T getValue() {
-        return value;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public int getTTL() {
-        return TTL;
-    }
-
-    public int getExpiry() {
-        return expiry;
-    }
-
-    public Node<T> getNext() {
-        return next;
-    }
-
-    public Node<T> getPrev() {
-        return prev;
-    }
-
     public void update(Node<T> updates) {
         this.value = updates.getValue();
-
-        List<Person> ls =new ArrayList<>();
-//        List<Person> list = ls.stream().filter(person -> {
-//            Calendar c= Calendar.getInstance();
-//            c.add(Calendar.DATE,-1);
-//            long yesterday =  c.getTimeInMillis();
-//                   return person.age == 25 && person.lastLogin.getTime() >= yesterday;
-//                }
-//        ).collect();
+//        List<Person> ls = new ArrayList<>(), ls2 = new ArrayList<>();
+//        Calendar c = Calendar.getInstance();
+//        c.add(Calendar.DATE, -1);
+//        long yesterday = c.getTimeInMillis();
+//        List<Person> list = ls.stream().filter(person -> person.age == 25 && person.lastLogin.getTime() >= yesterday
+//        ).toList();
 
 //        select * from person
 //            where name in (select distinct name from person where lastlogin >= '')
 //        and las;
 //        group by name having max(lastlogin) >'1';
-
     }
 
-    class Person implements Comparable {
-        String name;
-        int age;
-        Date lastLogin;
-
-        @Override
-        public int compareTo(Object o) {
-            Person p1 = (Person) o;
-            if(p1.name.equals(this.name)) return 0;
-            return p1.name.compareTo(this.name);
-        }
-    }
+//    class Person implements Comparable {
+//        String name;
+//        int age;
+//        Date lastLogin;
+//
+//        @Override
+//        public int compareTo(Object o) {
+//            Person p1 = (Person) o;
+//            if (p1.name.equals(this.name)) return 0;
+//            return p1.name.compareTo(this.name);
+//        }
+//    }
 //    Users with age 25, and logged in last 1 day.. sorted by loginTime
-
-
 }
 
 

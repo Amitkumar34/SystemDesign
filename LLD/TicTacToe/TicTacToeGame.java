@@ -1,18 +1,27 @@
 package LLD.TicTacToe;
 
+import LLD.TicTacToe.enums.Symbol;
+import LLD.TicTacToe.model.Board;
+import LLD.TicTacToe.model.Player;
+import lombok.Getter;
+
 import java.util.*;
 
 public class TicTacToeGame implements GameInt {
+    private final Scanner input;
     final Deque<Player> players;
     final Board board;
+    final int noOfPlayers;
 
-    private TicTacToeGame(Map<Cell, Player> players, int boardSize) {
+    private TicTacToeGame(Map<Symbol, Player> symbolPlayerMap, int boardSize, Scanner input) {
+        this.input = input;
         this.players = new LinkedList<>();
-        for (Map.Entry<Cell, Player> entry : players.entrySet()) {
-            if (entry.getValue() != null)
-                this.players.add(entry.getValue());
-        }
+        symbolPlayerMap.forEach((key, value) -> {
+            if (value != null)
+                this.players.add(value);
+        });
         this.board = new Board(boardSize);
+        this.noOfPlayers = this.players.size();
     }
 
     @Override
@@ -20,7 +29,6 @@ public class TicTacToeGame implements GameInt {
         printText("Game Started!!\n");
         showGameOptions();
 
-        Scanner sc = new Scanner(System.in);
         while (true) {
             board.print();
 
@@ -33,7 +41,7 @@ public class TicTacToeGame implements GameInt {
 
             Player cur = players.getFirst();
             printText(cur.getName() + " turn: Enter the cell position:  ");
-            String input = sc.nextLine().trim();
+            String input = this.input.nextLine().trim();
             if (handleOption(input)) return;
             String[] inputs = input.split(" ");
             int row, col;
@@ -44,7 +52,7 @@ public class TicTacToeGame implements GameInt {
                 printText("Invalid input...\n");
                 continue;
             }
-            if (!board.fillCell(row, col, cur.getAssigedCell())) {
+            if (!board.fillCell(row, col, cur.getAssignedCell())) {
                 printText("Invalid position...\n");
                 continue;
             }
@@ -54,7 +62,7 @@ public class TicTacToeGame implements GameInt {
             players.removeFirst();
 
             // checks if the turn played by the current player ends the game
-            if (board.hasStrike(row, col, cur.getAssigedCell())) {
+            if (board.hasStrike(row, col, cur.getAssignedCell())) {
                 board.print();
                 printText(cur.getName() + " WINS\n");
                 endGame();
@@ -64,7 +72,7 @@ public class TicTacToeGame implements GameInt {
         //checking if user still wants to play the game after previous game ends
         showGameOptions();
         while (true) {
-            String input = sc.nextLine().trim();
+            String input = this.input.nextLine().trim();
             if (handleOption(input)) return;
             printText("Invalid input...\n");
         }
@@ -80,10 +88,10 @@ public class TicTacToeGame implements GameInt {
      */
     private boolean handleOption(String option) {
         switch (option) {
-            case "END":
+            case "END", "end":
                 endGame();
                 return true;
-            case "RESTART":
+            case "RESTART", "restart":
                 reStartGame();
                 return true;
         }
@@ -102,44 +110,78 @@ public class TicTacToeGame implements GameInt {
         System.out.println("!!Game Ends!!");
     }
 
-    public void printText(String s) {
-        System.out.print(s);
+    public static void printText(String... texts) {
+        for (String s : texts)
+            System.out.print(s);
     }
 
     /**
      * Builder for {@link TicTacToeGame}, set configurations for the Game
      */
+    @Getter
     public static class Builder {
+        private final Scanner input;
         int size;
-        Map<Cell, Player> playerMap;
+        Map<Symbol, Player> playerMap;
 
-        public Builder() {
+        public Builder(Scanner input) {
+            this.input = input;
             playerMap = new HashMap<>();
         }
 
-        public int getSize() {
-            return size;
-        }
-
-        public Builder setSize(int size) {
-            this.size = size;
-            return this;
-        }
-
-        public Map<Cell, Player> getPlayerMap() {
-            return playerMap;
-        }
 
         public boolean addPlayer(Player player) {
-            if (playerMap.containsKey(player.getAssigedCell())) {
+            if (playerMap.containsKey(player.getAssignedCell())) {
                 return false;
             }
-            playerMap.put(player.getAssigedCell(), player);
+            playerMap.put(player.getAssignedCell(), player);
             return true;
         }
 
+        public Builder takeGameConfiguration() {
+            printText("Set Game Configurations..\n");
+            while (true) {
+                try {
+                    printText("Enter board size: ");
+                    this.size = input.nextInt();
+                    break;
+                } catch (Exception e) {
+                    printText("Invalid Number!!!\n");
+                } finally {
+                    input.nextLine();
+                }
+            }
+            Symbol[] symbols = Symbol.values();
+            int noOfPlayers;
+            while (true) {
+                try {
+                    printText("Enter no of Players b/w 2 to " + symbols.length, ": ");
+                    noOfPlayers = input.nextInt();
+                    if (noOfPlayers < 2 || symbols.length < noOfPlayers) throw new Exception();
+                    break;
+                } catch (Exception e) {
+                    printText("Invalid Number!!!\n");
+                } finally {
+                    input.nextLine();
+                }
+            }
+            for (int i = 0; i < noOfPlayers; i++) {
+                while (true) {
+                    try {
+                        printText("Enter player" + (i + 1) + " name for " + symbols[i] + " : ");
+                        String name = input.nextLine();
+                        if (this.addPlayer(new Player(name, symbols[i]))) break;
+                        else printText("Player Already Exists - ", name, "\n");
+                    } catch (Exception e) {
+                        printText(e.getMessage());
+                    }
+                }
+            }
+            return this;
+        }
+
         public TicTacToeGame build() {
-            return new TicTacToeGame(playerMap, size);
+            return new TicTacToeGame(playerMap, size, input);
         }
     }
 }

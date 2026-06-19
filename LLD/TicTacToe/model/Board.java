@@ -1,18 +1,21 @@
-package LLD.TicTacToe;
+package LLD.TicTacToe.model;
+
+import LLD.TicTacToe.Utils;
+import LLD.TicTacToe.enums.Symbol;
 
 public class Board {
     private final int size;
-    private Cell[][] board;
+    private Symbol[][] board;
 
     public Board(int size) {
         this.size = size;
-        this.board = new Cell[size][size];
+        this.board = new Symbol[size][size];
     }
 
     /**
      * @return true if the cell got filled at the given position with the value {@param cell}
      */
-    public boolean fillCell(int row, int col, Cell cell) {
+    public boolean fillCell(int row, int col, Symbol cell) {
         if (0 <= row && row < size && 0 <= col && col < size && board[row][col] == null) {
             board[row][col] = cell;
             return true;
@@ -23,7 +26,7 @@ public class Board {
     /**
      * @return true if board is striked for the passed cell position means condition of winning is achieved
      */
-    public boolean hasStrike(int row, int col, Cell cell) {
+    public boolean hasStrike(int row, int col, Symbol cell) {
         return Utils.isRowStrike(board, row, cell)
                 || Utils.isColumnStrike(board, col, cell)
                 || Utils.isForwardDiagonalStrike(board, cell)
@@ -55,6 +58,6 @@ public class Board {
     }
 
     public void reset() {
-        this.board = new Cell[size][size];
+        this.board = new Symbol[size][size];
     }
 }

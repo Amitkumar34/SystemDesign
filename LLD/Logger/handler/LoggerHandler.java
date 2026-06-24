@@ -24,5 +24,5 @@ public abstract class LoggerHandler {
         }
     }
 
-    public abstract void publishLog(String message, LogSinkSubject logSinkSubject);
+    protected abstract void publishLog(String message, LogSinkSubject logSinkSubject);
 }

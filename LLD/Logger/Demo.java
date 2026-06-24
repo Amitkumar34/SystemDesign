@@ -1,6 +1,6 @@
 package LLD.Logger;
 
-public class LoggerApplication {
+public class Demo {
 
     public static void main(String[] args) {
         Logger logger = Logger.getInstance();

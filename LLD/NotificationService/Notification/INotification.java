@@ -1,4 +1,4 @@
-package LLD.NotificationService.model;
+package LLD.NotificationService.Notification;
 
 public interface INotification {
     String getContent();

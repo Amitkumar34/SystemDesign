@@ -1,6 +1,4 @@
-package LLD.NotificationService.model.impl;
-
-import LLD.NotificationService.model.INotification;
+package LLD.NotificationService.Notification;
 
 public class SimpleNotification implements INotification {
     String text;

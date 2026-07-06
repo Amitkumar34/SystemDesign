@@ -1,7 +1,6 @@
-package LLD.NotificationService.model.impl;
+package LLD.NotificationService.Decorator;
 
-import LLD.NotificationService.model.IDecorator;
-import LLD.NotificationService.model.INotification;
+import LLD.NotificationService.Notification.INotification;
 
 import java.util.Calendar;
 

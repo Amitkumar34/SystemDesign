@@ -1,6 +1,4 @@
-package LLD.NotificationService.model.impl;
-
-import LLD.NotificationService.model.INotificationStrategy;
+package LLD.NotificationService.NotiStrategy;
 
 public class SMSNotificationStrategy implements INotificationStrategy {
     String mobileNumber;

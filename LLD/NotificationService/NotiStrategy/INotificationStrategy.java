@@ -1,4 +1,4 @@
-package LLD.NotificationService.model;
+package LLD.NotificationService.NotiStrategy;
 
 public interface INotificationStrategy {
     void sendNotification(String content);

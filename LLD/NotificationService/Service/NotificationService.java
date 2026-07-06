@@ -1,6 +1,8 @@
-package LLD.NotificationService.model;
+package LLD.NotificationService.Service;
 
-import LLD.NotificationService.model.impl.NotificationObservable;
+import LLD.NotificationService.Notification.INotification;
+import LLD.NotificationService.Observe.IObserver;
+import LLD.NotificationService.Observe.Observerable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,14 +10,14 @@ import java.util.List;
 public class NotificationService {
     private static NotificationService notificationService;
     public List<INotification> notifications = new ArrayList<>();
-    NotificationObservable observerable = new NotificationObservable();
+    private Observerable<INotification> notificationObserverable;
 
     private NotificationService (){
-
+        notificationObserverable = new Observerable<>(null);
     }
 
     public void addObserver(IObserver observer){
-        observerable.addObserver(observer);
+        notificationObserverable.addObserver(observer);
     }
 
 
@@ -27,7 +29,6 @@ public class NotificationService {
 
     public void sendNotification(INotification notification){
         notifications.add(notification);
-        observerable.setNotification(notification);
+        notificationObserverable.set(notification);
     }
-
 }

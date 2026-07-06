@@ -1,4 +1,6 @@
-package LLD.NotificationService.model;
+package LLD.NotificationService.Decorator;
+
+import LLD.NotificationService.Notification.INotification;
 
 public abstract class IDecorator implements INotification {
     protected INotification notification;

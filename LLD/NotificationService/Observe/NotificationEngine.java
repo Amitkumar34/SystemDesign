@@ -1,13 +1,12 @@
-package LLD.NotificationService.model.impl;
+package LLD.NotificationService.Observe;
 
-import LLD.NotificationService.model.INotificationStrategy;
-import LLD.NotificationService.model.IObserver;
-import LLD.NotificationService.model.IObserverable;
+import LLD.NotificationService.NotiStrategy.INotificationStrategy;
+import LLD.NotificationService.Notification.INotification;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotificationEngine implements IObserver {
+public class NotificationEngine implements IObserver<INotification> {
     List<INotificationStrategy> notificationStrategyList;
 
     public NotificationEngine() {
@@ -19,9 +18,9 @@ public class NotificationEngine implements IObserver {
     }
 
     @Override
-    public void update(IObserverable observerable) {
+    public void update(INotification notification) {
         for (INotificationStrategy iNotificationStrategy : notificationStrategyList) {
-            iNotificationStrategy.sendNotification(((NotificationObservable) observerable).getNotificationContent());
+            iNotificationStrategy.sendNotification(notification.getContent());
         }
     }
 }

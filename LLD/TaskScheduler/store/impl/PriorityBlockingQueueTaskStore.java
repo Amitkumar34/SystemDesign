@@ -25,13 +25,14 @@ public class PriorityBlockingQueueTaskStore implements TaskStore<ScheduledTask> 
 
     @Override
     public boolean add(ScheduledTask task) {
+        tasks.add(task);
         return taskQueue.offer(task);
     }
 
     @Override
     public boolean remove(ScheduledTask task) {
         if (tasks.contains(task)) {
-            return taskQueue.remove(task);
+            return taskQueue.remove(task) && tasks.remove(task);
         } else {
             return false;
         }
@@ -39,7 +40,9 @@ public class PriorityBlockingQueueTaskStore implements TaskStore<ScheduledTask> 
 
     @Override
     public ScheduledTask poll() throws InterruptedException {
-        return taskQueue.take();
+        ScheduledTask task = taskQueue.take();
+        tasks.remove(task);
+        return task;
     }
 
     @Override

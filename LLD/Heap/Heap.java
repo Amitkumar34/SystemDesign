@@ -34,13 +34,13 @@ public abstract class Heap<T extends Comparable<T>> {
         while (2 * curIdx + 1 < heapArray.size()) {
             int leftIdx = 2 * curIdx + 1;
             int rightIdx = 2 * curIdx + 2;
-            int childMin = leftIdx;
+            int childTop = leftIdx;
             if (rightIdx < heapArray.size() && compare(heapArray.get(rightIdx), heapArray.get(leftIdx))) {
-                childMin = rightIdx;
+                childTop = rightIdx;
             }
-            if (compare(heapArray.get(childMin), heapArray.get(curIdx))) {
-                Collections.swap(heapArray, curIdx, childMin);
-                curIdx = childMin;
+            if (compare(heapArray.get(childTop), heapArray.get(curIdx))) {
+                Collections.swap(heapArray, curIdx, childTop);
+                curIdx = childTop;
             } else break;
         }
     }

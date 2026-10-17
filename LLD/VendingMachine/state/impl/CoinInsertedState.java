@@ -12,17 +12,19 @@ public class CoinInsertedState implements State {
 
     @Override
     public void insertAmount(double amount) {
-//        vendingMachine.addAmount(amount);
+        vendingMachine.addAmount(amount);
         System.out.println("Amount added: " + amount);
     }
 
     @Override
     public void pressButton(int index) {
-//        vendinx
+        vendingMachine.setCurrentVMState(new DispenseState(vendingMachine));
+        vendingMachine.setSelectedItemIndex(index);
+        System.out.println("Item Selected: " + index);
     }
 
     @Override
     public void dispenseItem(int index) {
-
+        throw new IllegalStateException("Cannot dispense item as no item is selected");
     }
 }

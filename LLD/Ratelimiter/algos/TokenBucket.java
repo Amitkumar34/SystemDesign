@@ -36,6 +36,6 @@ public class TokenBucket implements RateLimiter {
         int addToken = (int) ((curTime - lastUpdatedTime.get()) / 1000 * tokenAdditionRatePerSeconds);
         int newCap = Math.min(currentCapacity.get() + addToken, maxBucketCapacity);
         currentCapacity.set(newCap);
-        lastUpdatedTime.set(curTime);
+        lastUpdatedTime.set(curTime );
     }
 }

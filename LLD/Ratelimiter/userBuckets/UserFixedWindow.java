@@ -1,6 +1,5 @@
 package LLD.Ratelimiter.userBuckets;
 
-import LLD.Ratelimiter.UserBuckets;
 import LLD.Ratelimiter.algos.FixedWindow;
 import lombok.Getter;
 

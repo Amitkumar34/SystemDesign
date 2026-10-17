@@ -53,7 +53,7 @@ public class TicTacToeGame implements GameInt {
                 continue;
             }
             if (!board.fillCell(row, col, cur.getAssignedCell())) {
-                printText("Invalid position...\n");
+                printText("Invalid position...   \n");
                 continue;
             }
 

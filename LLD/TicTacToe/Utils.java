@@ -1,7 +1,9 @@
 package LLD.TicTacToe;
 
+import LLD.TicTacToe.enums.Symbol;
+
 public class Utils {
-    public static boolean isRowStrike(Cell[][] board, int row, Cell cell) {
+    public static boolean isRowStrike(Symbol[][] board, int row, Symbol cell) {
         int size = board.length;
         if (0 <= row && row < size) for (int col = 0; col < size; col++) {
             if (board[row][col] != cell) return false;
@@ -9,7 +11,7 @@ public class Utils {
         return true;
     }
 
-    public static boolean isColumnStrike(Cell[][] board, int col, Cell cell) {
+    public static boolean isColumnStrike(Symbol[][] board, int col, Symbol cell) {
         int size = board.length;
         if (0 <= col && col < size) for (int row = 0; row < size; row++) {
             if (board[row][col] != cell) return false;
@@ -17,7 +19,7 @@ public class Utils {
         return true;
     }
 
-    public static boolean isForwardDiagonalStrike(Cell[][] board, Cell cell) {
+    public static boolean isForwardDiagonalStrike(Symbol[][] board, Symbol cell) {
         int size = board.length;
         for (int row = 0; row < size; row++) {
             int col = size - row - 1;
@@ -26,7 +28,7 @@ public class Utils {
         return true;
     }
 
-    public static boolean isBackwardDiagonalStrike(Cell[][] board, Cell cell) {
+    public static boolean isBackwardDiagonalStrike(Symbol[][] board, Symbol cell) {
         int size = board.length;
         for (int row = 0; row < size; row++) {
             int col = row;

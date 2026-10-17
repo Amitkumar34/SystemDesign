@@ -22,6 +22,9 @@ public class DispenseState implements State {
 
     @Override
     public void dispenseItem(int index) {
-        
+        System.out.println("Dispensing Item at index = " + index);
+        vendingMachine.setSelectedItemIndex(-1);
+        vendingMachine.setAmount(0);
+        vendingMachine.setCurrentVMState(new NoCoinInsertedState(vendingMachine));
     }
 }

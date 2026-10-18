@@ -63,7 +63,7 @@
     <build>
         <!-- 
             Source directory set to project root so that:
-            - Folder structure: LLD/ParkingLot/Demo.java
+            - Folder structure: LLD/ParkingLot/UserJourneyMain.java
             - Package declaration: package LLD.ParkingLot;
             Both match correctly.
         -->

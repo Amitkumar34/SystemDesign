@@ -1,20 +1,18 @@
 package Interview.UserJourneyService.services;
 
-import Interview.UserJourneyService.enums.JourneyType;
-import Interview.UserJourneyService.factory.JourneyFactory;
 import Interview.UserJourneyService.model.Journey;
 import Interview.UserJourneyService.model.Payload;
 import Interview.UserJourneyService.model.Stage;
 import Interview.UserJourneyService.repos.JourneyRepo;
 import Interview.UserJourneyService.repos.UserJourneyRepo;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class JourneyService {
-    public static final String DATE_OF_EVALUATION = "2025-01-15";
 
     private final JourneyRepo journeyRepo;
     private final UserJourneyRepo userJourneyRepo;
@@ -24,17 +22,10 @@ public class JourneyService {
         this.userJourneyRepo = userJourneyRepo;
     }
 
-    public String createJourney(Journey journeyDTO) {
-        if (journeyRepo.isExists(journeyDTO.getJourneyId())) {
+    public synchronized String createJourney(Journey journey) {
+        if (journeyRepo.isExists(journey.getJourneyId())) {
             throw new RuntimeException("Journey already exists");
         }
-        Journey journey = JourneyFactory.create(
-                journeyDTO.getJourneyId(),
-                journeyDTO.getStages(),
-                false,
-                journeyDTO.getJourneyType(),
-                journeyDTO.getStartDate(),
-                journeyDTO.getEndDate());
         journeyRepo.save(journey);
         return journey.getJourneyId();
     }
@@ -85,19 +76,7 @@ public class JourneyService {
     }
 
     private boolean isEligibleForEvaluation(Journey journey) {
-        if (!journey.isActive()) return false;
-
-        return switch (journey.getJourneyType()) {
-            case PERPETUAL -> true;
-            case TIME_BOUND -> {
-                String start = journey.getStartDate();
-                String end = journey.getEndDate();
-                yield start != null
-                        && end != null
-                        && start.compareTo(DATE_OF_EVALUATION) <= 0
-                        && DATE_OF_EVALUATION.compareTo(end) <= 0;
-            }
-        };
+        return journey.isEligibleForEvaluation();
     }
 
     private static boolean conditionsMatch(Map<String, String> conditions, Map<String, String> combined) {

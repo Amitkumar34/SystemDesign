@@ -2,9 +2,10 @@ package Interview.UserJourneyService.repos;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class UserJourneyRepo {
-    private final Map<String, Map<String, Integer>> userStageByJourney = new HashMap<>();
+    private final Map<String, Map<String, Integer>> userStageByJourney = new ConcurrentHashMap<>();
 
     public Map<String,Integer> getUserJourney(String userId){
         return userStageByJourney.getOrDefault(userId, new HashMap<>());

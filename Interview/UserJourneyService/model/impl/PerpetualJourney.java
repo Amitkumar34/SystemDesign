@@ -9,6 +9,11 @@ import java.util.List;
 public class PerpetualJourney extends Journey {
 
     public PerpetualJourney(String journeyId, List<Stage> stages, boolean isActive) {
-        super(journeyId, stages, isActive, JourneyType.PERPETUAL, null, null);
+        super(journeyId, stages, isActive, JourneyType.PERPETUAL);
+    }
+
+    @Override
+    public boolean isEligibleForEvaluation() {
+        return isActive;
     }
 }

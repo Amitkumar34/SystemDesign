@@ -17,8 +17,8 @@ import java.util.Scanner;
 
 public class UserJourneyMain {
     public static void main(String[] args) {
-//        runTestCase();
-        runByTakingInputs();
+        runTestCase();
+//        runByTakingInputs();
     }
     public static void runByTakingInputs() {
         Scanner scanner = new Scanner(System.in);

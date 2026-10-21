@@ -3,6 +3,7 @@ package Interview.UserJourneyService.factory;
 import Interview.UserJourneyService.enums.JourneyType;
 import Interview.UserJourneyService.model.Journey;
 import Interview.UserJourneyService.model.Stage;
+import Interview.UserJourneyService.model.impl.ExpirationJourney;
 import Interview.UserJourneyService.model.impl.PerpetualJourney;
 import Interview.UserJourneyService.model.impl.TimeBoundJourney;
 
@@ -18,6 +19,7 @@ public class JourneyFactory {
         return switch (journeyType) {
             case PERPETUAL -> new PerpetualJourney(journeyId, stages, isActive);
             case TIME_BOUND -> new TimeBoundJourney(journeyId, stages, isActive, startDate, endDate);
+            case EXPIRATION_BY_STAGE -> new ExpirationJourney(journeyId,stages,isActive,null,null,8 );
         };
     }
 }

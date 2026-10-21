@@ -10,22 +10,16 @@ public abstract class Journey {
     protected final List<Stage> stages;
     protected boolean isActive;
     protected final JourneyType journeyType;
-    protected final String startDate;
-    protected final String endDate;
 
     protected Journey(
             String journeyId,
             List<Stage> stages,
             boolean isActive,
-            JourneyType journeyType,
-            String startDate,
-            String endDate) {
+            JourneyType journeyType) {
         this.journeyId = journeyId;
         this.stages = new ArrayList<>(stages);
         this.isActive = isActive;
         this.journeyType = journeyType;
-        this.startDate = startDate;
-        this.endDate = endDate;
     }
 
     public String getJourneyId() {
@@ -44,15 +38,10 @@ public abstract class Journey {
         return journeyType;
     }
 
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
 
     public void setActive(boolean active) {
         this.isActive = active;
     }
+
+    public abstract boolean isEligibleForEvaluation();
 }

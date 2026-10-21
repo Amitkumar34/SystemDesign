@@ -3,11 +3,11 @@ package Interview.UserJourneyService.repos;
 import Interview.UserJourneyService.model.Journey;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class JourneyRepo {
-    private final Map<String, Journey> journeys = new LinkedHashMap<>();
+    private final Map<String, Journey> journeys = new ConcurrentHashMap<>();
 
     public Journey save(Journey journey) {
         journeys.put(journey.getJourneyId(), journey);
